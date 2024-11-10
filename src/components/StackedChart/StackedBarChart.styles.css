@@ -1,0 +1,63 @@
+/* src/components/StackedBarChart/StackedBarChart.styles.css */
+.chart-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .bar {
+    cursor: pointer;
+  }
+  
+  .bar:hover {
+    opacity: 0.8;
+  }
+  
+  .grid line {
+    stroke: #e0e0e0;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+  }
+  
+  .grid path {
+    stroke-width: 0;
+  }
+  
+  .tooltip {
+    position: absolute;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    pointer-events: none;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .fig-num {
+    font-size: 14px;
+    font-weight: bold;
+    fill: #333;
+  }
+  
+  .chart-heading {
+    font-size: 16px;
+    font-weight: bold;
+    fill: #333;
+  }
+  
+  .chart-subheading {
+    font-size: 14px;
+    fill: #666;
+  }
+  
+  .source-text {
+    font-size: 12px;
+    fill: #999;
+    font-style: italic;
+  }
+  
+  .legend-item text {
+    fill: #333;
+  }

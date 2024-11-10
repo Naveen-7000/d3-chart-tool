@@ -1,0 +1,155 @@
+{
+    // Basic Chart Identification
+    "id": "renderChart",
+    "class": "drawBar",
+    "wrapper": "getChartWidth",
+    
+    // Chart Titles and Labels
+    "figNum": "FIGURE 1",
+    "heading": "Economics and sustainability dominate top resource management drivers",
+    "subHeading": "Below is the percentage of respondents who selected each statement as one of the top drivers of their resource management programs",
+    
+    // Visual Elements Visibility
+    "toolTipVisibility": true,
+    "legendVisibility": true,
+    "isAverageLine": false,
+    "isFooterNote": true,
+    
+    // Colors and Styling
+    "color": ["#9dd4cf", "#6fc2b4", "#00abab", "#0097a9", "#007680"],
+    "averageStrokeColor": "#BBCBCB",
+    
+    // Source Attribution
+    "sourceText": "Source: UI component library charts",
+    
+    // Enhanced Customization Options
+    "dimensions": {
+      "width": "100%",
+      "height": 400,
+      "margin": {
+        "top": 60,    // Extra space for figure number and heading
+        "right": 30,
+        "bottom": 50, // Extra space for source text
+        "left": 60
+      },
+      "barPadding": 0.2,
+      "barRadius": 0  // Rounded corners for bars
+    },
+    
+    // Bar Specific Styling
+    "bars": {
+      "opacity": 1,
+      "borderRadius": 0,
+      "horizontalPadding": 0.2,
+      "animationDuration": 750,
+      "hover": {
+        "opacity": 0.8,
+        "highlight": true
+      }
+    },
+    
+    // Axis Configuration
+    "axis": {
+      "x": {
+        "visible": true,
+        "gridLines": false,
+        "label": "",
+        "tickRotation": 45,
+        "tickFormat": null
+      },
+      "y": {
+        "visible": true,
+        "gridLines": true,
+        "label": "",
+        "tickFormat": ".0%",
+        "tickCount": 5
+      }
+    },
+    
+    // Legend Configuration
+    "legend": {
+      "position": "bottom", // top, right, bottom, left
+      "layout": "horizontal", // horizontal, vertical
+      "alignment": "center", // start, center, end
+      "symbolSize": 15,
+      "textStyle": {
+        "fontSize": 12,
+        "fontFamily": "Arial",
+        "color": "#666"
+      }
+    },
+    
+    // Tooltip Configuration
+    "tooltip": {
+      "format": {
+        "value": ".1%"
+      },
+      "background": "white",
+      "border": "#ccc",
+      "borderRadius": 4,
+      "padding": 8,
+      "textStyle": {
+        "fontSize": 12,
+        "fontFamily": "Arial",
+        "color": "#333"
+      }
+    },
+    
+    // Typography
+    "typography": {
+      "figNum": {
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "color": "#333"
+      },
+      "heading": {
+        "fontSize": 16,
+        "fontWeight": "bold",
+        "color": "#333"
+      },
+      "subHeading": {
+        "fontSize": 14,
+        "color": "#666"
+      },
+      "sourceText": {
+        "fontSize": 12,
+        "color": "#999"
+      }
+    },
+    
+    // Responsiveness
+    "responsive": {
+      "enabled": true,
+      "breakpoints": {
+        "sm": 576,
+        "md": 768,
+        "lg": 992,
+        "xl": 1200
+      },
+      "rules": {
+        "sm": {
+          "dimensions": {
+            "height": 300,
+            "margin": {
+              "left": 40,
+              "right": 20
+            }
+          },
+          "axis": {
+            "x": {
+              "tickRotation": 90
+            }
+          }
+        }
+      }
+    },
+    
+    // Animation
+    "animation": {
+      "enabled": true,
+      "duration": 750,
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "delay": 0,
+      "stagger": 50
+    }
+  }
