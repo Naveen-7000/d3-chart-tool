@@ -1,81 +1,101 @@
 // src/App.js
-import React, { useState } from 'react';
-import AreaChart from './components/AreaChart/AreaChart';
-import BarChart from './components/BarChart/BarChart';
-import DonutChart from './components/DonutChart/DonutChart';
-import GroupedBarChart from './components/GroupedChart/GroupedBarChart';
-import LineChart from './components/LineChart/LineChart';
-import MultilineChart from './components/MultilineChart/MultilineChart';
-import PieChart from './components/PieChart/PieChart';
-import StackedBarChart from './components/StackedChart/StackedBarChart';
-import { areaChartConfig, barChartConfig, donutChartConfig, groupedBarConfig, lineChartConfig, multilineChartConfig, pieChartConfig, stackedBarConfig } from './data/sampleConfig';
-import { areaChartData, barChartData, donutChartData, groupedBarData, lineChartData, multilineChartData, pieChartData, stackedBarData } from './data/sampleData';
-import "./App.css"
+import React, { useState } from "react";
+import AreaChart from "./components/AreaChart/AreaChart";
+import BarChart from "./components/BarChart/BarChart";
+import DonutChart from "./components/DonutChart/DonutChart";
+import GroupedBarChart from "./components/GroupedChart/GroupedBarChart";
+import LineChart from "./components/LineChart/LineChart";
+import MultilineChart from "./components/MultilineChart/MultilineChart";
+import PieChart from "./components/PieChart/PieChart";
+import StackedBarChart from "./components/StackedChart/StackedBarChart";
+import ExportPanel from "./components/ExportPanel/ExportPanel";
+import {
+  areaChartConfig,
+  barChartConfig,
+  donutChartConfig,
+  groupedBarConfig,
+  lineChartConfig,
+  multilineChartConfig,
+  pieChartConfig,
+  stackedBarConfig,
+} from "./data/sampleConfig";
+import {
+  areaChartData,
+  barChartData,
+  donutChartData,
+  groupedBarData,
+  lineChartData,
+  multilineChartData,
+  pieChartData,
+  stackedBarData,
+} from "./data/sampleData";
+import "./App.css";
+
 const chartComponents = [
-  { 
-    id: 'bar', 
-    name: 'Bar Chart', 
+  {
+    id: "bar",
+    name: "Bar Chart",
     component: BarChart,
     data: barChartData,
     config: barChartConfig,
-    icon: '📊'
+    icon: "📊",
   },
-  { 
-    id: 'line', 
-    name: 'Line Chart', 
+  {
+    id: "line",
+    name: "Line Chart",
     component: LineChart,
     data: lineChartData,
     config: lineChartConfig,
-    icon: '📈'
+    icon: "📈",
   },
-  { 
-    id: 'pie', 
-    name: 'Pie Chart', 
+  {
+    id: "pie",
+    name: "Pie Chart",
     component: PieChart,
     data: pieChartData,
     config: pieChartConfig,
-    icon: '🥧'
+    icon: "🥧",
   },
-  { 
-    id: 'donut', 
-    name: 'Donut Chart', 
+  {
+    id: "donut",
+    name: "Donut Chart",
     component: DonutChart,
     data: donutChartData,
     config: donutChartConfig,
-    icon: '🍩'
+    icon: "🍩",
   },
-  { 
-    id: 'multiline', 
-    name: 'Multiline Chart', 
+  {
+    id: "multiline",
+    name: "Multiline Chart",
     component: MultilineChart,
     data: multilineChartData,
     config: multilineChartConfig,
-    icon: '📊'
+    icon: "📊",
   },
-  { 
-    id: 'stacked', 
-    name: 'Stacked Bar Chart', 
+  {
+    id: "stacked",
+    name: "Stacked Bar Chart",
     component: StackedBarChart,
     data: stackedBarData,
     config: stackedBarConfig,
-    icon: '📊'
+    icon: "📊",
   },
-  { 
-    id: 'grouped', 
-    name: 'Grouped Bar Chart', 
+  {
+    id: "grouped",
+    name: "Grouped Bar Chart",
     component: GroupedBarChart,
     data: groupedBarData,
     config: groupedBarConfig,
-    icon: '📊'
+    icon: "📊",
   },
-  { 
-    id: 'area', 
-    name: 'Area Chart', 
+  {
+    id: "area",
+    name: "Area Chart",
     component: AreaChart,
     data: areaChartData,
     config: areaChartConfig,
-    icon: '📈'
-  }
+    icon: "📈",
+  },
 ];
 
 const App = () => {
@@ -92,7 +112,9 @@ const App = () => {
           {chartComponents.map((chart) => (
             <div
               key={chart.id}
-              className={`chart-card ${selectedChart.id === chart.id ? 'active' : ''}`}
+              className={`chart-card ${
+                selectedChart.id === chart.id ? "active" : ""
+              }`}
               onClick={() => setSelectedChart(chart)}
             >
               <span className="chart-icon">{chart.icon}</span>
@@ -100,6 +122,12 @@ const App = () => {
             </div>
           ))}
         </div>
+        {/* Export */}
+      <ExportPanel
+        chartType={selectedChart.id}
+        data={selectedChart.data}
+        config={selectedChart.config}
+      />
       </aside>
 
       {/* Main Content */}
@@ -107,13 +135,13 @@ const App = () => {
         <div className="chart-container">
           {React.createElement(selectedChart.component, {
             data: selectedChart.data,
-            config: selectedChart.config
+            config: selectedChart.config,
           })}
         </div>
       </main>
+      
     </div>
   );
 };
-
 
 export default App;
