@@ -1,63 +1,388 @@
-/* src/components/BarChart/BarChart.styles.css */
 .chart-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.bar {
+  cursor: pointer;
+}
+
+.grid line {
+  stroke: #e0e0e0;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 8px;
+  font: 12px sans-serif;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  pointer-events: none;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.fig-num {
+  font-size: 14px;
+  font-weight: bold;
+  fill: #333;
+}
+
+.chart-heading {
+  font-size: 16px;
+  font-weight: bold;
+  fill: #333;
+}
+
+.chart-subheading {
+  font-size: 14px;
+  fill: #666;
+}
+
+.source-text {
+  font-size: 12px;
+  fill: #999;
+  font-style: italic;
+}
+
+.x-axis text,
+.y-axis text {
+  font-size: 12px;
+}
+
+.value-label {
+  font-size: 12px;
+  fill: #666;
+}
+
+/* src/components/BarChart/BarChart.styles.css */
+
+/* Container Styles */
+.chart-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* SVG Base Styles */
+.chart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Axis Styles */
+.x-axis,
+.y-axis {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.x-axis line,
+.y-axis line {
+  stroke: #e0e0e0;
+}
+
+.x-axis path,
+.y-axis path {
+  stroke: #e0e0e0;
+}
+
+.x-axis text,
+.y-axis text {
+  fill: black;
+  font-size: 12px;
+}
+
+/* Grid Styles */
+.grid line {
+  stroke: #e0e0e0;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+.horizontal-grid line {
+  stroke-dasharray: 4, 4;
+}
+
+.vertical-grid line {
+  stroke-dasharray: 4, 4;
+}
+
+/* Bar Styles */
+.bar {
+  cursor: pointer;
+  shape-rendering: geometricPrecision;
+  transition: filter 0.3s ease;
+}
+
+.bar:hover {
+  filter: brightness(0.9);
+}
+
+/* Label Styles */
+.bar-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  dominant-baseline: middle;
+  font-size: 12px;
+}
+
+.label-inside {
+  fill: white;
+}
+
+.label-outside {
+  fill: black;
+}
+
+/* Legend Styles */
+.legend {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.legend-item {
+  cursor: pointer;
+}
+
+.legend-item:hover text {
+  font-weight: bold;
+}
+
+.legend-title {
+  font-size: 14px;
+  font-weight: bold;
+  fill: black;
+}
+
+.legend-symbol {
+  stroke-width: 2px;
+}
+
+/* Tooltip Styles */
+.tooltip {
+  position: absolute;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  pointer-events: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: opacity 0.2s ease;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid white;
+}
+
+/* Title and Metadata Styles */
+.fig-num {
+  font-size: 14px;
+  font-weight: bold;
+  fill: black;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.chart-heading {
+  font-size: 16px;
+  font-weight: bold;
+  fill: black;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.chart-subheading {
+  font-size: 14px;
+  fill: black;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.source-text {
+  font-size: 12px;
+  fill: #666;
+  font-style: italic;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Animation States */
+.bar-enter {
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+.bar-enter-active {
+  opacity: 1;
+  transform: scaleY(1);
+  transition: opacity 300ms ease-in, transform 300ms ease-out;
+}
+
+.bar-exit {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.bar-exit-active {
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: opacity 300ms ease-in, transform 300ms ease-out;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 10px;
   }
-  
-  .bar {
-    transition: height 0.5s ease-out, y 0.5s ease-out, opacity 0.2s ease-out;
+
+  .x-axis text,
+  .y-axis text {
+    font-size: 10px;
   }
-  
+
+  .bar-label {
+    font-size: 10px;
+  }
+
+  .fig-num {
+    font-size: 12px;
+  }
+
+  .chart-heading {
+    font-size: 14px;
+  }
+
+  .chart-subheading {
+    font-size: 12px;
+  }
+
+  .source-text {
+    font-size: 10px;
+  }
+
+  .legend {
+    font-size: 10px;
+  }
+}
+
+/* Custom Scrollbar */
+.chart-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.chart-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.chart-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.chart-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Print Styles */
+@media print {
+  .chart-container {
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+  }
+
+  .tooltip {
+    display: none;
+  }
+
   .bar:hover {
-    opacity: 0.8;
+    filter: none;
+  }
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Helper Classes */
+.hidden {
+  display: none;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.no-events {
+  pointer-events: none;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* Focus States for Accessibility */
+.bar:focus,
+.legend-item:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+@media (forced-colors: active) {
+  .bar {
+    forced-color-adjust: none;
   }
   
   .grid line {
-    stroke: #e0e0e0;
-    stroke-opacity: 0.7;
-    shape-rendering: crispEdges;
-  }
-  
-  .grid path {
-    stroke-width: 0;
+    stroke: CanvasText;
   }
   
   .tooltip {
-    position: absolute;
-    padding: 8px;
-    font: 12px sans-serif;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    pointer-events: none;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    border: 1px solid CanvasText;
   }
-  
-  .fig-num {
-    font-size: 14px;
-    font-weight: bold;
-    fill: #333;
-  }
-  
-  .chart-heading {
-    font-size: 16px;
-    font-weight: bold;
-    fill: #333;
-  }
-  
-  .chart-subheading {
-    font-size: 14px;
-    fill: #666;
-  }
-  
-  .source-text {
-    font-size: 12px;
-    fill: #999;
-    font-style: italic;
-  }
-  
-  .x-axis text, .y-axis text {
-    font-size: 12px;
-  }
+}

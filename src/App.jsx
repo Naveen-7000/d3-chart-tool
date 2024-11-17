@@ -30,6 +30,9 @@ import {
   stackedBarData,
 } from "./data/sampleData";
 import "./App.css";
+import BarChartCustomizer from "./components/Customization/BarChartCustomizer";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import store from "./store/store";
 
 const chartComponents = [
   {
@@ -105,7 +108,10 @@ const App = () => {
     <div className="app-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="sidebar-header">
+       <div className="customization-sidebar">
+         <BarChartCustomizer />
+      </div>
+        {/* <div className="sidebar-header">
           <h2>Chart Types</h2>
         </div>
         <div className="chart-grid">
@@ -121,13 +127,14 @@ const App = () => {
               <h3>{chart.name}</h3>
             </div>
           ))}
-        </div>
+        </div> */}
         {/* Export */}
-      <ExportPanel
-        chartType={selectedChart.id}
-        data={selectedChart.data}
-        config={selectedChart.config}
-      />
+        <ExportPanel
+          chartType={selectedChart.id}
+          data={selectedChart.data}
+          config={selectedChart.config}
+        />
+     
       </aside>
 
       {/* Main Content */}
@@ -139,7 +146,6 @@ const App = () => {
           })}
         </div>
       </main>
-      
     </div>
   );
 };

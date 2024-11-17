@@ -1,151 +1,80 @@
-// src/components/BarChart/BarChart.js
-import React from 'react';
-import * as d3 from 'd3';
-import './BarChart.styles.css';
+/* eslint-disable react/prop-types */
+import React from "react";
+import { useSelector } from "react-redux";
+import * as d3 from "d3";
+import "./BarChart.styles.css";
+import { addBars, addGrid, addLabels, addLegend, addMetadata, addTooltips, addXAxis, addYAxis, adjustMarginsForLegend, calculateLegendSpace, createScales } from "./BarChart.utils";
 
-const BarChart = ({ data, config }) => {
+const BarChart = ({ data }) => {
+  const config = useSelector((state) => state.barChart);
+
   React.useEffect(() => {
     drawChart();
-    // Cleanup function
     return () => {
-      d3.select('#barChart').selectAll('*').remove();
+      d3.select("#barChart").selectAll("*").remove();
     };
   }, [data, config]);
 
   const drawChart = () => {
-    // Clear any existing SVG
-    d3.select('#barChart').selectAll('*').remove();
+    // Clear previous chart
+    d3.select("#barChart").selectAll("*").remove();
 
-    // Set dimensions
-    const margin = config.dimensions.margin;
-    const width = 800 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+    // Base dimensions
+    const baseWidth = config.dimensions.width === 'auto' ? 800 : config.dimensions.width;
+    const baseHeight = config.dimensions.height === 'auto' ?
+      baseWidth / config.dimensions.aspectRatio : config.dimensions.height;
 
-    // Create SVG
-    const svg = d3.select('#barChart')
-      .append('svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom);
+    // Calculate margins with legend space
+    const margin = { ...config.dimensions.margin };
+    const legendSpace = calculateLegendSpace(data, baseWidth, baseHeight);
+    adjustMarginsForLegend(margin, legendSpace, config.legend);
 
-    // Create main group element
-    const g = svg.append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+    // Calculate actual chart dimensions
+    const width = baseWidth - margin.left - margin.right;
+    const height = baseHeight - margin.top - margin.bottom;
 
-    // Create scales
-    const x = d3.scaleBand()
-      .rangeRound([0, width])
-      .padding(0.3)
-      .domain(data.map(d => d.category));
+    // Create SVG with defined viewBox for responsiveness
+    const svg = d3.select("#barChart")
+      .append("svg")
+      .attr("width", baseWidth)
+      .attr("height", baseHeight)
+      .attr("viewBox", `0 0 ${baseWidth} ${baseHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
 
-    const y = d3.scaleLinear()
-      .rangeRound([height, 0])
-      .domain([0, 100]);
+    // Create chart area group
+    const g = svg.append("g")
+      .attr("class", "chart-area")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Add X axis
-    g.append('g')
-      .attr('class', 'x-axis')
-      .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(x))
-      .selectAll('text')
-      .attr('transform', 'rotate(-45)')
-      .style('text-anchor', 'end');
+    // Add clip path for chart area
+    g.append("clipPath")
+      .attr("id", "chart-area-clip")
+      .append("rect")
+      .attr("width", width)
+      .attr("height", height);
 
-    // Add Y axis
-    g.append('g')
-      .attr('class', 'y-axis')
-      .call(d3.axisLeft(y)
-        .ticks(5)
-        .tickFormat(d => d + '%'));
+    // Create scales based on orientation
+    const scales = createScales(config, data, width, height);
+    
+    // Add axes
+    if (config.axes.xAxis.show) addXAxis(g, scales, config, height);
+    if (config.axes.yAxis.show) addYAxis(g, scales, config);
+    if (config.grid.show) addGrid(g, scales, config, width, height);
 
-    // Add gridlines
-    g.append('g')
-      .attr('class', 'grid')
-      .call(d3.axisLeft(y)
-        .ticks(5)
-        .tickSize(-width)
-        .tickFormat(''));
-
-    // Create bars
-    const bars = g.selectAll('.bar')
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', d => x(d.category))
-      .attr('width', x.bandwidth())
-      .style('fill', (d, i) => config.color[i]);
-
-    // Simple CSS animation instead of JavaScript animation
-    bars
-      .attr('height', 0)
-      .attr('y', height)
-      .attr('data-height', d => height - y(d.value))
-      .attr('data-y', d => y(d.value))
-      .classed('animate-bar', true);
-
-    // Trigger reflow to ensure animation works
-    void document.body.offsetHeight;
-
-    // Set final values
-    bars
-      .attr('height', d => height - y(d.value))
-      .attr('y', d => y(d.value));
-
-    // Add tooltips
-    if (config.toolTipVisibility) {
-      const tooltip = d3.select('body')
-        .append('div')
-        .attr('class', 'tooltip')
-        .style('opacity', 0);
-
-      bars
-        .on('mouseover', function(d) {
-          const e = d3.event;
-          tooltip
-            .style('opacity', 0.9)
-            .style('color',"black")
-            .html(`${d.category}<br/>${d.value}%`)
-            .style('left', `${e.pageX}px`)
-            .style('top', `${e.pageY - 28}px`);
-          
-          d3.select(this)
-            .style('opacity', 0.8);
-        })
-        .on('mouseout', function() {
-          tooltip
-            .style('opacity', 0);
-          
-          d3.select(this)
-            .style('opacity', 1);
-        });
-    }
-
-    // Add text elements after bars
-    svg.append('text')
-      .attr('class', 'fig-num')
-      .attr('x', margin.left)
-      .attr('y', 25)
-      .text(config.figNum);
-
-    svg.append('text')
-      .attr('class', 'chart-heading')
-      .attr('x', margin.left)
-      .attr('y', 50)
-      .text(config.heading);
-
-    svg.append('text')
-      .attr('class', 'chart-subheading')
-      .attr('x', margin.left)
-      .attr('y', 70)
-      .text(config.subHeading);
-
-    if (config.isFooterNote) {
-      svg.append('text')
-        .attr('class', 'source-text')
-        .attr('x', margin.left)
-        .attr('y', height + margin.top + margin.bottom - 5)
-        .text(config.sourceText);
-    }
+    // Add bars with animation
+    const barsGroup = addBars(g, data, scales, config);
+    
+    // Add labels if enabled
+    if (config.labels.show) addLabels(g, data, scales, config);
+    
+    // Add legend if enabled
+    if (config.legend.show) addLegend(svg, data, config, margin, width);
+    
+    // Add tooltips if enabled
+    if (config.tooltip.show) addTooltips(barsGroup, config);
+    
+    // Add metadata (titles, source, etc.)
+    addMetadata(svg, config, margin, width, height);
   };
 
   return (
