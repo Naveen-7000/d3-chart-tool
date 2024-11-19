@@ -46,8 +46,8 @@ const initialState = {
   // Legend Configuration
   legend: {
     show: true,
-    position: "right", // 'top', 'right', 'bottom', 'left'
-    layout: "vertical", // 'horizontal', 'vertical'
+    position: "top", // 'top', 'right', 'bottom', 'left'
+    layout: "horizontal", // 'horizontal', 'vertical'
     alignment: "start", // 'start', 'middle', 'end'
     itemWidth: 100,
     itemHeight: 20,

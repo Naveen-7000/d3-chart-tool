@@ -31,8 +31,6 @@ import {
 } from "./data/sampleData";
 import "./App.css";
 import BarChartCustomizer from "./components/Customization/BarChartCustomizer";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import store from "./store/store";
 
 const chartComponents = [
   {

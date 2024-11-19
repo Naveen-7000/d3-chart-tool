@@ -55,10 +55,13 @@ const BarChart = ({ data }) => {
 
     // Create scales based on orientation
     const scales = createScales(config, data, width, height);
+
+        // Add metadata (titles, source, etc.)
+        addMetadata(svg, config, margin, width, height);
     
     // Add axes
     if (config.axes.xAxis.show) addXAxis(g, scales, config, height);
-    if (config.axes.yAxis.show) addYAxis(g, scales, config);
+    if (config.axes.yAxis.show) addYAxis(g, scales, config, height);
     if (config.grid.show) addGrid(g, scales, config, width, height);
 
     // Add bars with animation
@@ -68,17 +71,16 @@ const BarChart = ({ data }) => {
     if (config.labels.show) addLabels(g, data, scales, config);
     
     // Add legend if enabled
-    if (config.legend.show) addLegend(svg, data, config, margin, width);
+    if (config.legend.show) addLegend(svg, data, config, margin, width, height);
     
     // Add tooltips if enabled
     if (config.tooltip.show) addTooltips(barsGroup, config);
     
-    // Add metadata (titles, source, etc.)
-    addMetadata(svg, config, margin, width, height);
+
   };
 
   return (
-    <div className="chart-container">
+    <div>
       <div id="barChart"></div>
     </div>
   );

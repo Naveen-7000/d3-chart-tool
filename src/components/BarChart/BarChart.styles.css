@@ -386,3 +386,39 @@
     border: 1px solid CanvasText;
   }
 }
+
+#toolTip {
+  position: absolute;
+  background-color: #53565a;
+  padding: 8px;
+  width: 200px;
+  max-width: 200px;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  opacity: 0;
+  text-align: center;
+  border: 2px solid #d0d0ce;
+}
+
+#toolTip .after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  right: 5px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #d0d0ce;
+  margin-left: -10px;
+}
+
+.rightPointer#toolTip .after {
+  transform: translate(90px, 0);
+}
+
+.leftPointer#toolTip .after {
+  transform: translate(-90px, 0);
+}
